@@ -1,0 +1,7 @@
+# Module M1 only: config + pytest tests/test_m1.py (lightweight install).
+# naive_baseline.py (Qdrant + embed): pip install -r requirements-naive.txt
+# Full pipeline: pip install -r requirements-full.txt
+
+python-dotenv==1.0.1
+pytest==8.3.4
+scikit-learn>=1.3.0

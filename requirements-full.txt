@@ -1,0 +1,30 @@
+# Lab 18: full pipeline (M1–M5, Qdrant, RAGAS, local models). Cài lâu.
+# Python 3.10+ recommended. torch is pulled in by sentence-transformers.
+
+# Config / env
+python-dotenv==1.0.1
+
+# Vector store + embeddings (src/m2_search.py — DenseSearch, Qdrant)
+qdrant-client==1.12.1
+sentence-transformers==3.3.1
+
+# Hybrid search — BM25 + Vietnamese tokenization (src/m2_search.py TODOs)
+rank-bm25==0.2.2
+# 9.x ships prebuilt underthesea_core wheels for Python 3.12 on Windows (6.8.x may need Rust/maturin).
+underthesea==9.4.0
+
+# Reranking — CrossEncoder (Option B in m3); FlagEmbedding = Option A for BGE reranker
+FlagEmbedding==1.2.11
+
+# Optional lightweight reranker (src/m3_rerank.py — FlashrankReranker)
+flashrank==0.2.10
+
+# Evaluation (src/m4_eval.py — RAGAS)
+datasets==3.1.0
+ragas==0.2.14
+
+# LLM API — enrichment + RAGAS / generation (src/m5_enrichment.py, pipeline TODO)
+openai==1.57.4
+
+# Tests + lab check script
+pytest==8.3.4

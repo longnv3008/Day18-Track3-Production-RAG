@@ -1,3 +1,18 @@
 [
-  {"question": "hihi cả nhà tự tạo testset bằng cơm nhé", "ground_truth": "Không kịp tạo luôn"},
+  {
+    "question": "Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu?",
+    "ground_truth": "1.250 ty VND"
+  },
+  {
+    "question": "Loi nhuan sau thue nam 2024 la bao nhieu?",
+    "ground_truth": "85 ty VND"
+  },
+  {
+    "question": "Chuyen giao du lieu ca nhan ra nuoc ngoai can gi (mock)?",
+    "ground_truth": "Can tuan thu dieu kien theo Nghi dinh va huong dan lien nganh, can danh gia tac dong, hop dong, bien phap bao dam"
+  },
+  {
+    "question": "Trong bao nhieu gio phai bao cao su co ro ri du lieu (mock)?",
+    "ground_truth": "72 gio ke tu khi phat hien neu ap dung"
+  }
 ]

@@ -15,6 +15,12 @@ from config import (DATA_DIR, HIERARCHICAL_PARENT_SIZE, HIERARCHICAL_CHILD_SIZE,
                     SEMANTIC_THRESHOLD)
 
 
+def _split_sentences(text: str) -> list[str]:
+    """Split into sentences; supports Latin/VN punctuation and blank lines."""
+    parts = re.split(r"(?<=[.!?])\s+|\n\s*\n+", text)
+    return [p.strip() for p in parts if p and p.strip()]
+
+
 @dataclass
 class Chunk:
     text: str
@@ -61,7 +67,8 @@ def chunk_semantic(text: str, threshold: float = SEMANTIC_THRESHOLD,
                    metadata: dict | None = None) -> list[Chunk]:
     """
     Split text by sentence similarity — nhóm câu cùng chủ đề.
-    Tốt hơn basic vì không cắt giữa ý.
+    Dùng TF–IDF + cosine giữa câu liền kề (không import sentence_transformers / transformers,
+    tránh lỗi Keras 3 / TensorFlow trên một số môi trường).
 
     Args:
         text: Input text.
@@ -71,33 +78,55 @@ def chunk_semantic(text: str, threshold: float = SEMANTIC_THRESHOLD,
     Returns:
         List of Chunk objects grouped by semantic similarity.
     """
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+
     metadata = metadata or {}
-    # TODO: Implement semantic chunking
-    # 1. Split text into sentences:
-    #    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+|\n\n', text) if s.strip()]
-    #
-    # 2. Encode sentences:
-    #    from sentence_transformers import SentenceTransformer
-    #    model = SentenceTransformer("all-MiniLM-L6-v2")  # fast
-    #    embeddings = model.encode(sentences)
-    #
-    # 3. Compare consecutive sentences:
-    #    from numpy import dot
-    #    from numpy.linalg import norm
-    #    def cosine_sim(a, b): return dot(a, b) / (norm(a) * norm(b))
-    #
-    # 4. Group sentences:
-    #    current_group = [sentences[0]]
-    #    for i in range(1, len(sentences)):
-    #        sim = cosine_sim(embeddings[i-1], embeddings[i])
-    #        if sim < threshold:
-    #            chunks.append(Chunk(text=" ".join(current_group), metadata=...))
-    #            current_group = []
-    #        current_group.append(sentences[i])
-    #    # Don't forget last group
-    #
-    # 5. Return chunks with metadata: {"chunk_index": i, "strategy": "semantic"}
-    return []
+    sentences = _split_sentences(text)
+    if not sentences:
+        return []
+
+    if len(sentences) == 1:
+        return [
+            Chunk(
+                text=sentences[0],
+                metadata={**metadata, "chunk_index": 0, "strategy": "semantic"},
+            )
+        ]
+
+    # char n-grams: on dinh hon voi tieng Viet (khong phu thuoc word boundary \b).
+    vectorizer = TfidfVectorizer(
+        analyzer="char_wb",
+        ngram_range=(2, 5),
+        min_df=1,
+        sublinear_tf=True,
+    )
+    mat = vectorizer.fit_transform(sentences)
+
+    groups: list[list[str]] = [[sentences[0]]]
+    for i in range(1, len(sentences)):
+        sim = float(cosine_similarity(mat[i - 1], mat[i])[0, 0])
+        if sim < threshold:
+            groups.append([sentences[i]])
+        else:
+            groups[-1].append(sentences[i])
+
+    chunks: list[Chunk] = []
+    for idx, grp in enumerate(groups):
+        body = " ".join(grp).strip()
+        if not body:
+            continue
+        chunks.append(
+            Chunk(
+                text=body,
+                metadata={
+                    **metadata,
+                    "chunk_index": idx,
+                    "strategy": "semantic",
+                },
+            )
+        )
+    return chunks
 
 
 # ─── Strategy 2: Hierarchical Chunking ──────────────────
@@ -120,23 +149,83 @@ def chunk_hierarchical(text: str, parent_size: int = HIERARCHICAL_PARENT_SIZE,
         (parents, children) — mỗi child có parent_id link đến parent.
     """
     metadata = metadata or {}
-    # TODO: Implement hierarchical chunking
-    # 1. Split text into parents:
-    #    paragraphs = text.split("\n\n")
-    #    Gom paragraphs cho đến khi đạt parent_size → 1 parent chunk
-    #    pid = f"parent_{p_index}"
-    #    parent = Chunk(text=parent_text, metadata={**metadata, "chunk_type": "parent", "parent_id": pid})
-    #
-    # 2. Split each parent into children:
-    #    Slide window child_size trên parent text
-    #    child = Chunk(text=child_text, metadata={**metadata, "chunk_type": "child"}, parent_id=pid)
-    #
-    # 3. Return (parents_list, children_list)
-    #
-    # Production pattern:
-    #   - Index CHILDREN vào vector DB (nhỏ → embedding chính xác)
-    #   - Khi retrieve child → lookup parent_id → trả parent cho LLM (đủ context)
-    return [], []
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+
+    parents: list[Chunk] = []
+    buf: list[str] = []
+    cur_len = 0
+    p_index = 0
+
+    def _flush_parent() -> None:
+        nonlocal buf, cur_len, p_index
+        if not buf:
+            return
+        body = "\n\n".join(buf)
+        pid = f"parent_{p_index}"
+        parents.append(
+            Chunk(
+                text=body,
+                metadata={
+                    **metadata,
+                    "chunk_type": "parent",
+                    "parent_id": pid,
+                },
+                parent_id=None,
+            )
+        )
+        p_index += 1
+        buf = []
+        cur_len = 0
+
+    for para in paragraphs:
+        add = len(para) + (2 if buf else 0)
+        if buf and cur_len + add > parent_size:
+            _flush_parent()
+        buf.append(para)
+        cur_len += add
+    _flush_parent()
+
+    if not parents and text.strip():
+        pid = "parent_0"
+        parents.append(
+            Chunk(
+                text=text.strip(),
+                metadata={**metadata, "chunk_type": "parent", "parent_id": pid},
+                parent_id=None,
+            )
+        )
+
+    children: list[Chunk] = []
+    stride = max(1, child_size // 2)
+    for p in parents:
+        pid = p.metadata["parent_id"]
+        pt = p.text
+        if not pt.strip():
+            continue
+        c_idx = 0
+        start = 0
+        while start < len(pt):
+            end = min(start + child_size, len(pt))
+            piece = pt[start:end].strip()
+            if piece:
+                children.append(
+                    Chunk(
+                        text=piece,
+                        metadata={
+                            **metadata,
+                            "chunk_type": "child",
+                            "chunk_index": c_idx,
+                            "parent_id": pid,
+                        },
+                        parent_id=pid,
+                    )
+                )
+                c_idx += 1
+            if end >= len(pt):
+                break
+            start += stride
+
+    return parents, children
 
 
 # ─── Strategy 3: Structure-Aware Chunking ────────────────
@@ -155,32 +244,37 @@ def chunk_structure_aware(text: str, metadata: dict | None = None) -> list[Chunk
         List of Chunk objects, mỗi chunk = 1 section (header + content).
     """
     metadata = metadata or {}
-    # TODO: Implement structure-aware chunking
-    # 1. Split by markdown headers:
-    #    sections = re.split(r'(^#{1,3}\s+.+$)', text, flags=re.MULTILINE)
-    #
-    # 2. Pair headers with their content:
-    #    chunks = []
-    #    current_header = ""
-    #    current_content = ""
-    #    for part in sections:
-    #        if re.match(r'^#{1,3}\s+', part):
-    #            if current_content.strip():
-    #                chunks.append(Chunk(
-    #                    text=f"{current_header}\n{current_content}".strip(),
-    #                    metadata={**metadata, "section": current_header, "strategy": "structure"}
-    #                ))
-    #            current_header = part.strip()
-    #            current_content = ""
-    #        else:
-    #            current_content += part
-    #    # Don't forget last section
-    #
-    # 3. Return chunks — mỗi chunk = 1 section hoàn chỉnh
-    #
-    # Ưu điểm: giữ nguyên tables, lists, code blocks
-    # Dùng khi: corpus có structured documents (docs, API refs, manuals)
-    return []
+    headers = list(re.finditer(r"^#{1,3}\s+.+$", text, flags=re.MULTILINE))
+    if not headers:
+        t = text.strip()
+        if not t:
+            return []
+        return [
+            Chunk(
+                text=t,
+                metadata={**metadata, "section": "", "strategy": "structure", "chunk_index": 0},
+            )
+        ]
+
+    chunks: list[Chunk] = []
+    for i, m in enumerate(headers):
+        start = m.start()
+        end = headers[i + 1].start() if i + 1 < len(headers) else len(text)
+        section_text = text[start:end].strip()
+        header_line = m.group(0).strip()
+        if section_text:
+            chunks.append(
+                Chunk(
+                    text=section_text,
+                    metadata={
+                        **metadata,
+                        "section": header_line,
+                        "strategy": "structure",
+                        "chunk_index": len(chunks),
+                    },
+                )
+            )
+    return chunks
 
 
 # ─── A/B Test: Compare All Strategies ────────────────────
@@ -193,17 +287,54 @@ def compare_strategies(documents: list[dict]) -> dict:
     Returns:
         {"basic": {...}, "semantic": {...}, "hierarchical": {...}, "structure": {...}}
     """
-    # TODO: Implement comparison
-    # 1. For each doc, run: chunk_basic, chunk_semantic, chunk_hierarchical, chunk_structure_aware
-    # 2. Collect stats: num_chunks, avg_length, min_length, max_length
-    # 3. Print comparison table:
-    #    Strategy      | Chunks | Avg Len | Min | Max
-    #    basic         |   12   |   420   | 100 | 500
-    #    semantic      |    8   |   580   | 200 | 900
-    #    hierarchical  | 5p/15c |   256   | 100 | 2048
-    #    structure     |   10   |   450   | 150 | 800
-    # 4. Return results dict
-    return {}
+    def _len_stats(chs: list[Chunk]) -> dict:
+        if not chs:
+            return {"num_chunks": 0, "avg_length": 0.0, "min_length": 0, "max_length": 0}
+        lens = [len(c.text) for c in chs]
+        return {
+            "num_chunks": len(chs),
+            "avg_length": sum(lens) / len(lens),
+            "min_length": min(lens),
+            "max_length": max(lens),
+        }
+
+    all_basic: list[Chunk] = []
+    all_semantic: list[Chunk] = []
+    all_struct: list[Chunk] = []
+    total_parents = total_children = 0
+    child_lens: list[int] = []
+
+    for doc in documents:
+        text = doc["text"]
+        meta = doc.get("metadata") or {}
+        all_basic.extend(chunk_basic(text, metadata=meta))
+        all_semantic.extend(chunk_semantic(text, threshold=SEMANTIC_THRESHOLD, metadata=meta))
+        all_struct.extend(chunk_structure_aware(text, metadata=meta))
+        par, ch = chunk_hierarchical(
+            text,
+            parent_size=HIERARCHICAL_PARENT_SIZE,
+            child_size=HIERARCHICAL_CHILD_SIZE,
+            metadata=meta,
+        )
+        total_parents += len(par)
+        total_children += len(ch)
+        child_lens.extend(len(c.text) for c in ch)
+
+    hier_stats = {
+        "num_parents": total_parents,
+        "num_children": total_children,
+        "num_chunks": total_children,
+        "avg_length": (sum(child_lens) / len(child_lens)) if child_lens else 0.0,
+        "min_length": min(child_lens) if child_lens else 0,
+        "max_length": max(child_lens) if child_lens else 0,
+    }
+
+    return {
+        "basic": _len_stats(all_basic),
+        "semantic": _len_stats(all_semantic),
+        "hierarchical": hier_stats,
+        "structure": _len_stats(all_struct),
+    }
 
 
 if __name__ == "__main__":

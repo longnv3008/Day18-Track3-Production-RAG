@@ -54,18 +54,20 @@ class BM25Search:
 class DenseSearch:
     def __init__(self):
         from qdrant_client import QdrantClient
+
         self.client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
         self._encoder = None
 
     def _get_encoder(self):
         if self._encoder is None:
             from sentence_transformers import SentenceTransformer
+
             self._encoder = SentenceTransformer(EMBEDDING_MODEL)
         return self._encoder
 
     def index(self, chunks: list[dict], collection: str = COLLECTION_NAME) -> None:
         """Index chunks into Qdrant."""
-        # TODO: Implement dense indexing
+        # TODO: Implement dense indexing (M2)
         # 1. from qdrant_client.models import Distance, VectorParams, PointStruct
         # 2. self.client.recreate_collection(collection, VectorParams(size=EMBEDDING_DIM, distance=Distance.COSINE))
         # 3. texts = [c["text"] for c in chunks]
@@ -76,7 +78,7 @@ class DenseSearch:
 
     def search(self, query: str, top_k: int = DENSE_TOP_K, collection: str = COLLECTION_NAME) -> list[SearchResult]:
         """Search using dense vectors."""
-        # TODO: Implement dense search
+        # TODO: Implement dense search (M2)
         # 1. query_vector = self._get_encoder().encode(query).tolist()
         # 2. hits = self.client.search(collection, query_vector, limit=top_k)
         # 3. Return [SearchResult(text=hit.payload["text"], score=hit.score, metadata=hit.payload, method="dense")]

@@ -15,7 +15,7 @@ QDRANT_PORT = 6333
 COLLECTION_NAME = "lab18_production"
 NAIVE_COLLECTION = "lab18_naive"
 
-# --- Embedding ---
+# --- Embedding (M2 dense / pipeline when implemented) ---
 EMBEDDING_MODEL = "BAAI/bge-m3"
 EMBEDDING_DIM = 1024
 
