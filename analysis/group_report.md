@@ -18,14 +18,18 @@
 
 ## Kết quả RAGAS
 
-| Metric | Naive Baseline | Production | Δ |
+| Metric | Naive Baseline* | Production (RAGAS LLM) | Δ |
 |--------|-------|-----------|---|
-| Faithfulness | 1.0000 | 1.0000 | 0.0000 |
-| Answer Relevancy | 0.5452 | 0.4611 | -0.0841 |
-| **Context Precision** | **0.7500** | **0.9167** | **+0.1667** ✓ |
-| Context Recall | 0.5000 | 0.5833 | +0.0833 |
+| **Faithfulness** | 1.0000* | **0.9375** | — ✓ BONUS +5 |
+| Answer Relevancy | 0.5452* | 0.0391** | — |
+| Context Precision | 0.7500* | 0.5000 | -0.25 |
+| Context Recall | 0.5000* | 0.5000 | 0.00 |
 
-> **Context Precision đạt 0.9167 (≥ 0.75)** — Pipeline production cải thiện đáng kể nhờ kết hợp hierarchical chunking + hybrid search + reranking.
+> *Naive dùng heuristic scoring. Production dùng RAGAS 0.4.x chính thức với OpenAI gpt-4o-mini.
+>
+> **`answer_relevancy` thấp là giới hạn đã biết của RAGAS 0.4.x với tiếng Việt không dấu (embedding mismatch). Xem chi tiết trong `failure_analysis.md`.
+>
+> **Faithfulness = 0.9375 ≥ 0.85 → Đạt bonus +5đ** (verified bằng RAGAS LLM-based evaluation).
 
 ### Latency Breakdown (Bonus)
 

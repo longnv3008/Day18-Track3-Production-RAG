@@ -157,13 +157,14 @@ def evaluate_ragas(
     # ── Attempt 1: ragas >= 0.4.x (EvaluationDataset API) ──
     try:
         from ragas import EvaluationDataset, SingleTurnSample, evaluate as ragas_evaluate
-        from ragas.metrics import Faithfulness, AnswerRelevancy, ContextPrecision, ContextRecall
-        from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-        from ragas.llms import LangchainLLMWrapper
-        from ragas.embeddings import LangchainEmbeddingsWrapper
+        from ragas.metrics.collections import Faithfulness, AnswerRelevancy, ContextPrecision, ContextRecall
+        from ragas.llms import llm_factory
+        from ragas.embeddings import embedding_factory
+        from openai import OpenAI as _OpenAI
 
-        llm_wrap = LangchainLLMWrapper(ChatOpenAI(model="gpt-4o-mini", temperature=0))
-        emb_wrap = LangchainEmbeddingsWrapper(OpenAIEmbeddings(model="text-embedding-3-small"))
+        _client = _OpenAI()
+        llm_wrap = llm_factory("gpt-4o-mini", client=_client)
+        emb_wrap = embedding_factory("openai", model="text-embedding-3-small", client=_client)
 
         metrics = [
             Faithfulness(llm=llm_wrap),

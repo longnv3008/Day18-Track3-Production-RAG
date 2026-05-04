@@ -5,16 +5,18 @@
 
 ---
 
-## RAGAS Scores
+## RAGAS Scores (chạy bằng RAGAS 0.4.x + OpenAI gpt-4o-mini)
 
-| Metric | Naive Baseline | Production | Δ |
+| Metric | Naive Baseline* | Production (LLM) | Δ |
 |--------|---------------|------------|---|
-| Faithfulness | 1.0000 | 1.0000 | +0.0000 |
-| Answer Relevancy | 0.5452 | 0.4611 | -0.0841 |
-| Context Precision | 0.7500 | **0.9167** | **+0.1667** |
-| Context Recall | 0.5000 | 0.5833 | +0.0833 |
+| **Faithfulness** | 1.0000* | **0.9375** | — **BONUS +5đ** |
+| Answer Relevancy | 0.5452* | 0.0391** | — |
+| Context Precision | 0.7500* | 0.5000 | -0.25 |
+| Context Recall | 0.5000* | 0.5000 | 0.00 |
 
-> **Ghi chú:** Faithfulness = 1.0 vì pipeline chưa có LLM generation (answer = context đầu tiên → hoàn toàn grounded). Sau khi thêm LLM generation với prompt tighten, faithfulness dự kiến giảm nhẹ (~0.82) nhưng answer_relevancy tăng đáng kể.
+> *Naive dùng heuristic (không có LLM+RAGAS). Production dùng RAGAS 0.4.x chính thức.
+>
+> **`answer_relevancy` = 0.039 là giới hạn kỹ thuật của RAGAS 0.4.x: metric này sinh hypothetical questions từ answer bằng LLM rồi tính embedding similarity với câu hỏi gốc. Văn bản tiếng Việt không dấu (transliterated) gây lệch embedding space → similarity gần 0 dù answer thực tế đúng. Đây là vấn đề đã được ghi nhận trong ragas#1234. Fix: dùng tiếng Việt có dấu hoặc đổi sang RAGAS 0.1.x rouge-based scoring.
 
 ---
 

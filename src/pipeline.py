@@ -66,9 +66,11 @@ def _generate_answer(query: str, contexts: list[str]) -> str:
                     "role": "system",
                     "content": (
                         "Bạn là trợ lý tra cứu tài liệu. "
-                        "Trả lời CHỈ dựa trên context được cung cấp. "
-                        "Nếu context không có đủ thông tin, hãy nói 'Không tìm thấy thông tin phù hợp.' "
-                        "Trả lời ngắn gọn, súc tích."
+                        "Trả lời DỰA TRÊN context được cung cấp. "
+                        "Nếu context không có thông tin chính xác về câu hỏi, "
+                        "hãy tóm tắt những gì context CÓ liên quan và nêu rõ giới hạn. "
+                        "KHÔNG bịa đặt số liệu. Luôn trích dẫn từ context. "
+                        "Trả lời ngắn gọn, súc tích bằng tiếng Việt."
                     ),
                 },
                 {
@@ -76,7 +78,7 @@ def _generate_answer(query: str, contexts: list[str]) -> str:
                     "content": f"Context:\n{context_str}\n\nCâu hỏi: {query}",
                 },
             ],
-            temperature=0.1,
+            temperature=0.0,
             max_tokens=512,
         )
         _latency.record("llm_generate", (time.perf_counter() - t0) * 1000)
