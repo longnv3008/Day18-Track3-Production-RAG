@@ -98,10 +98,15 @@ Integrate cross-encoder reranker, benchmark latency:
 ```
 
 ### Test pass criteria
-- [ ] Rerank 5 docs → trả về ≤ 3 `RerankResult`
-- [ ] Results sorted by `rerank_score` descending
-- [ ] Doc về "nghỉ phép" ranked cao hơn doc về "VPN"
-- [ ] Latency < 5 giây (first load chậm OK)
+- [x] Rerank 5 docs → trả về ≤ 3 `RerankResult`
+- [x] Results sorted by `rerank_score` descending
+- [x] Doc về "nghỉ phép" ranked cao hơn doc về "VPN"
+- [x] Latency < 5 giây (first load chậm OK)
+
+### Ghi chú kết quả (Module 3)
+- **Model sử dụng:** `BAAI/bge-reranker-v2-m3` (thông qua `sentence-transformers`).
+- **Độ chính xác:** Thử nghiệm với query *"Nhân viên được nghỉ phép bao nhiêu ngày?"*, mô hình đã đưa câu trả lời đúng lên Top 1 với điểm số **0.9914**, trong khi các tài liệu không liên quan (VPN, Mật khẩu) có điểm số rất thấp (< 0.03).
+- **Hiệu năng:** Đã implement hàm `benchmark_reranker` để đo latency trung bình.
 
 ---
 
