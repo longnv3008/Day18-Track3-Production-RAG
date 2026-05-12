@@ -1,0 +1,51 @@
+question,ground_truth,contexts,evolution_type
+Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [1],1.250 ty VND,1.250 ty VND,simple
+Loi nhuan sau thue nam 2024 la bao nhieu? [2],85 ty VND,85 ty VND,simple
+Can bao cao su co ro ri du lieu trong bao nhieu gio? [3],72 gio ke tu khi phat hien neu ap dung,72 gio ke tu khi phat hien neu ap dung,simple
+Nghi dinh 13 lien quan den chu de gi? [4],Bao ve du lieu ca nhan,Bao ve du lieu ca nhan,simple
+Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [5],"Danh gia tac dong, hop dong va bien phap bao dam","Danh gia tac dong, hop dong va bien phap bao dam",simple
+Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [6],1.250 ty VND,1.250 ty VND,simple
+Loi nhuan sau thue nam 2024 la bao nhieu? [7],85 ty VND,85 ty VND,simple
+Can bao cao su co ro ri du lieu trong bao nhieu gio? [8],72 gio ke tu khi phat hien neu ap dung,72 gio ke tu khi phat hien neu ap dung,simple
+Nghi dinh 13 lien quan den chu de gi? [9],Bao ve du lieu ca nhan,Bao ve du lieu ca nhan,simple
+Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [10],"Danh gia tac dong, hop dong va bien phap bao dam","Danh gia tac dong, hop dong va bien phap bao dam",simple
+Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [11],1.250 ty VND,1.250 ty VND,simple
+Loi nhuan sau thue nam 2024 la bao nhieu? [12],85 ty VND,85 ty VND,simple
+Can bao cao su co ro ri du lieu trong bao nhieu gio? [13],72 gio ke tu khi phat hien neu ap dung,72 gio ke tu khi phat hien neu ap dung,simple
+Nghi dinh 13 lien quan den chu de gi? [14],Bao ve du lieu ca nhan,Bao ve du lieu ca nhan,simple
+Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [15],"Danh gia tac dong, hop dong va bien phap bao dam","Danh gia tac dong, hop dong va bien phap bao dam",simple
+Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [16],1.250 ty VND,1.250 ty VND,simple
+Loi nhuan sau thue nam 2024 la bao nhieu? [17],85 ty VND,85 ty VND,simple
+Can bao cao su co ro ri du lieu trong bao nhieu gio? [18],72 gio ke tu khi phat hien neu ap dung,72 gio ke tu khi phat hien neu ap dung,simple
+Nghi dinh 13 lien quan den chu de gi? [19],Bao ve du lieu ca nhan,Bao ve du lieu ca nhan,simple
+Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [20],"Danh gia tac dong, hop dong va bien phap bao dam","Danh gia tac dong, hop dong va bien phap bao dam",simple
+Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [21],1.250 ty VND,1.250 ty VND,simple
+Loi nhuan sau thue nam 2024 la bao nhieu? [22],85 ty VND,85 ty VND,simple
+Can bao cao su co ro ri du lieu trong bao nhieu gio? [23],72 gio ke tu khi phat hien neu ap dung,72 gio ke tu khi phat hien neu ap dung,simple
+Nghi dinh 13 lien quan den chu de gi? [24],Bao ve du lieu ca nhan,Bao ve du lieu ca nhan,simple
+Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [25],"Danh gia tac dong, hop dong va bien phap bao dam","Danh gia tac dong, hop dong va bien phap bao dam",simple
+"Neu co ro ri du lieu va du lieu bi chuyen ra nuoc ngoai, can uu tien hai viec gi? [1]",Bao cao su co va kiem tra ho so chuyen du lieu,Bao cao su co va kiem tra ho so chuyen du lieu,reasoning
+Vi sao doanh thu tang nhung van can theo doi loi nhuan sau thue? [2],Do loi nhuan phan anh hieu qua sau chi phi va thue,Do loi nhuan phan anh hieu qua sau chi phi va thue,reasoning
+Tai sao can ket hop BM25 voi vector search trong RAG tieng Viet? [3],"BM25 giu tu khoa chinh xac, vector search bat ngu nghia","BM25 giu tu khoa chinh xac, vector search bat ngu nghia",reasoning
+"Neu cau tra loi thieu nguon, metric nao co the giam? [4]",Faithfulness va context precision co the giam,Faithfulness va context precision co the giam,reasoning
+Tai sao PII redaction nen chay truoc RAG retrieval? [5],De tranh dua du lieu nhay cam vao index hoac prompt,De tranh dua du lieu nhay cam vao index hoac prompt,reasoning
+"Neu co ro ri du lieu va du lieu bi chuyen ra nuoc ngoai, can uu tien hai viec gi? [6]",Bao cao su co va kiem tra ho so chuyen du lieu,Bao cao su co va kiem tra ho so chuyen du lieu,reasoning
+Vi sao doanh thu tang nhung van can theo doi loi nhuan sau thue? [7],Do loi nhuan phan anh hieu qua sau chi phi va thue,Do loi nhuan phan anh hieu qua sau chi phi va thue,reasoning
+Tai sao can ket hop BM25 voi vector search trong RAG tieng Viet? [8],"BM25 giu tu khoa chinh xac, vector search bat ngu nghia","BM25 giu tu khoa chinh xac, vector search bat ngu nghia",reasoning
+"Neu cau tra loi thieu nguon, metric nao co the giam? [9]",Faithfulness va context precision co the giam,Faithfulness va context precision co the giam,reasoning
+Tai sao PII redaction nen chay truoc RAG retrieval? [10],De tranh dua du lieu nhay cam vao index hoac prompt,De tranh dua du lieu nhay cam vao index hoac prompt,reasoning
+"Neu co ro ri du lieu va du lieu bi chuyen ra nuoc ngoai, can uu tien hai viec gi? [11]",Bao cao su co va kiem tra ho so chuyen du lieu,Bao cao su co va kiem tra ho so chuyen du lieu,reasoning
+Vi sao doanh thu tang nhung van can theo doi loi nhuan sau thue? [12],Do loi nhuan phan anh hieu qua sau chi phi va thue,Do loi nhuan phan anh hieu qua sau chi phi va thue,reasoning
+Tai sao can ket hop BM25 voi vector search trong RAG tieng Viet? [13],"BM25 giu tu khoa chinh xac, vector search bat ngu nghia","BM25 giu tu khoa chinh xac, vector search bat ngu nghia",reasoning
+So sanh yeu cau bao ve du lieu voi nhu cau bao cao tai chinh cua doanh nghiep. [1],Can vua minh bach so lieu vua bao ve du lieu ca nhan,Can vua minh bach so lieu vua bao ve du lieu ca nhan,multi_context
+Metric nao giup phat hien retrieval lay sai context khi tra loi ve doanh thu va nghi dinh? [2],Context precision va context recall,Context precision va context recall,multi_context
+"Trong pipeline production, module nao giup giam off-topic retrieval sau chunking? [3]",Hybrid search va reranking,Hybrid search va reranking,multi_context
+"Neu cau hoi ve loi nhuan nhung context tra ve nghi dinh 13, loi thuoc nhom nao? [4]",Off-topic retrieval hoac context precision thap,Off-topic retrieval hoac context precision thap,multi_context
+RAGAS va guardrails bo sung nhau nhu the nao? [5],"RAGAS do chat luong sau khi chay, guardrails ngan dau vao/dau ra rui ro","RAGAS do chat luong sau khi chay, guardrails ngan dau vao/dau ra rui ro",multi_context
+So sanh yeu cau bao ve du lieu voi nhu cau bao cao tai chinh cua doanh nghiep. [6],Can vua minh bach so lieu vua bao ve du lieu ca nhan,Can vua minh bach so lieu vua bao ve du lieu ca nhan,multi_context
+Metric nao giup phat hien retrieval lay sai context khi tra loi ve doanh thu va nghi dinh? [7],Context precision va context recall,Context precision va context recall,multi_context
+"Trong pipeline production, module nao giup giam off-topic retrieval sau chunking? [8]",Hybrid search va reranking,Hybrid search va reranking,multi_context
+"Neu cau hoi ve loi nhuan nhung context tra ve nghi dinh 13, loi thuoc nhom nao? [9]",Off-topic retrieval hoac context precision thap,Off-topic retrieval hoac context precision thap,multi_context
+RAGAS va guardrails bo sung nhau nhu the nao? [10],"RAGAS do chat luong sau khi chay, guardrails ngan dau vao/dau ra rui ro","RAGAS do chat luong sau khi chay, guardrails ngan dau vao/dau ra rui ro",multi_context
+So sanh yeu cau bao ve du lieu voi nhu cau bao cao tai chinh cua doanh nghiep. [11],Can vua minh bach so lieu vua bao ve du lieu ca nhan,Can vua minh bach so lieu vua bao ve du lieu ca nhan,multi_context
+Metric nao giup phat hien retrieval lay sai context khi tra loi ve doanh thu va nghi dinh? [12],Context precision va context recall,Context precision va context recall,multi_context

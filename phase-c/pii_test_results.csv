@@ -1,0 +1,11 @@
+input,output,pii_found,latency_ms
+"Hi, I'm John Smith from Microsoft. Email: john@ms.com","Hi, I'm John Smith from Microsoft. Email: [EMAIL]",True,0.9
+"Call me at +1-555-1234 or visit 123 Main Street, NYC","Call me at +1-555-1234 or visit [ADDRESS], NYC",True,0.021
+So CCCD cua toi la 012345678901,So CCCD cua toi la [PHONE],True,0.01
+Lien he qua 0987654321 hoac tax 0123456789-001,Lien he qua [PHONE]hoac tax [PHONE],True,0.011
+"Customer Nguyen Van A, CCCD 098765432101, phone 0912345678","Customer Nguyen Van A, CCCD [PHONE], phone [PHONE]",True,0.013
+,,False,0.006
+Just a normal question,Just a normal question,False,0.008
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,False,0.394
+Ly Van Binh o 123 Le Loi,Ly Van Binh o [ADDRESS],True,0.009
+tax_code:0123456789-001 cccd:012345678901,tax_code:[PHONE]cccd:[PHONE],True,0.01

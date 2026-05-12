@@ -1,0 +1,31 @@
+question_id,question,accuracy,relevance,conciseness,helpfulness,overall
+1,Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [1],4,3,4,4,3.75
+2,Loi nhuan sau thue nam 2024 la bao nhieu? [2],3,3,4,4,3.5
+3,Can bao cao su co ro ri du lieu trong bao nhieu gio? [3],5,4,4,4,4.25
+4,Nghi dinh 13 lien quan den chu de gi? [4],5,4,4,4,4.25
+5,Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [5],4,4,4,4,4.0
+6,Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [6],3,3,4,4,3.5
+7,Loi nhuan sau thue nam 2024 la bao nhieu? [7],3,3,4,4,3.5
+8,Can bao cao su co ro ri du lieu trong bao nhieu gio? [8],5,4,4,4,4.25
+9,Nghi dinh 13 lien quan den chu de gi? [9],5,4,4,4,4.25
+10,Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [10],5,4,4,4,4.25
+11,Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [11],3,3,4,4,3.5
+12,Loi nhuan sau thue nam 2024 la bao nhieu? [12],3,3,4,4,3.5
+13,Can bao cao su co ro ri du lieu trong bao nhieu gio? [13],4,4,4,4,4.0
+14,Nghi dinh 13 lien quan den chu de gi? [14],4,3,4,4,3.75
+15,Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [15],5,4,4,4,4.25
+16,Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [16],3,3,4,4,3.5
+17,Loi nhuan sau thue nam 2024 la bao nhieu? [17],3,3,4,4,3.5
+18,Can bao cao su co ro ri du lieu trong bao nhieu gio? [18],5,4,4,4,4.25
+19,Nghi dinh 13 lien quan den chu de gi? [19],4,4,4,4,4.0
+20,Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [20],4,4,4,4,4.0
+21,Doanh thu thuan nam 2024 cua cong ty ABC la bao nhieu? [21],3,3,4,4,3.5
+22,Loi nhuan sau thue nam 2024 la bao nhieu? [22],4,4,4,4,4.0
+23,Can bao cao su co ro ri du lieu trong bao nhieu gio? [23],5,4,4,4,4.25
+24,Nghi dinh 13 lien quan den chu de gi? [24],5,4,4,4,4.25
+25,Chuyen giao du lieu ca nhan ra nuoc ngoai can gi? [25],5,4,4,4,4.25
+26,"Neu co ro ri du lieu va du lieu bi chuyen ra nuoc ngoai, can uu tien hai viec gi? [1]",4,4,4,4,4.0
+27,Vi sao doanh thu tang nhung van can theo doi loi nhuan sau thue? [2],4,4,4,4,4.0
+28,Tai sao can ket hop BM25 voi vector search trong RAG tieng Viet? [3],4,4,4,4,4.0
+29,"Neu cau tra loi thieu nguon, metric nao co the giam? [4]",5,4,4,4,4.25
+30,Tai sao PII redaction nen chay truoc RAG retrieval? [5],5,4,4,4,4.25
